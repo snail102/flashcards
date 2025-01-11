@@ -3,7 +3,7 @@ package ru.anydevprojects.flashcards.utils
 import java.io.File
 import java.util.zip.ZipFile
 
-object ApkgFileManager {
+class ApkgFileManager {
     fun extractFile(filePath: String, outputDir: String) {
         val zipFile = ZipFile(filePath)
         zipFile.entries().asSequence().forEach { entry ->
