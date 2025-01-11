@@ -1,10 +1,14 @@
 package ru.anydevprojects.flashcards.utils
 
+import android.content.Context
 import java.io.File
 import java.util.zip.ZipFile
 
-class ApkgFileManager {
-    fun extractFile(filePath: String, outputDir: String) {
+class ApkgFileManager(private val applicationContext: Context) {
+    fun extractFile(filePath: String): String {
+        val fileNameWithExtension = filePath.substringAfterLast("/")
+        val fileName = fileNameWithExtension.substringBefore(".")
+        val outputDir = "${applicationContext.cacheDir.path}/$fileName"
         val zipFile = ZipFile(filePath)
         zipFile.entries().asSequence().forEach { entry ->
             val file = File(outputDir, entry.name)
@@ -19,5 +23,6 @@ class ApkgFileManager {
                 }
             }
         }
+        return outputDir
     }
 }

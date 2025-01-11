@@ -60,4 +60,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.splashscreen)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.compose)
 }

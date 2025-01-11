@@ -11,16 +11,13 @@ class ImportFileUseCase(
     private val filePathConverter: FilePathConverter,
     private val apkgFileManager: ApkgFileManager
 ) {
-
-    private val apkgFileManager: ApkgFileManager = ApkgFileManager
-
     operator fun invoke(filePath: String): Flow<ImportState> = flow {
         emit(ImportState.Starting)
 
         runCatching {
             emit(ImportState.Progress(step = ImportStep.INITIALIZING))
 
-            apkgFileManager.extractFile()
+            apkgFileManager.extractFile(filePath)
 
             emit(ImportState.Progress(step = ImportStep.READING_FILE))
 
@@ -29,9 +26,12 @@ class ImportFileUseCase(
             emit(ImportState.Progress(step = ImportStep.FINALIZING))
             // TODO import file logic
         }.onSuccess {
-            emit(ImportState.Success())
+            emit(ImportState.Success("success"))
         }.onFailure {
             emit(ImportState.Error(it))
         }
+    }
+
+    private fun moveResourceFiles(filePath: String) {
     }
 }
