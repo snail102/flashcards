@@ -12,6 +12,8 @@ composeBom = "2024.12.01"
 navigationCompose = "2.8.5"
 splashscreen = "1.2.0-alpha02"
 koin = "3.5.6"
+roomKsp = "2.1.0-1.0.29"
+room = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,10 +35,14 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room"}
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room"}
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "roomKsp" }
 
