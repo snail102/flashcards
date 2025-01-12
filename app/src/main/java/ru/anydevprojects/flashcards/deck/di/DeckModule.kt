@@ -1,0 +1,9 @@
+package ru.anydevprojects.flashcards.deck.di
+
+import org.koin.dsl.module
+import ru.anydevprojects.flashcards.deck.data.DeckRepositoryImpl
+import ru.anydevprojects.flashcards.deck.domain.DeckRepository
+
+val deckModule = module {
+    factory<DeckRepository> { DeckRepositoryImpl() }
+}
