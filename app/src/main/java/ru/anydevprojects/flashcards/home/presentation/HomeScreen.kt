@@ -12,14 +12,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import org.koin.androidx.compose.koinViewModel
+import ru.anydevprojects.flashcards.home.presentation.models.HomeIntent
 
-private const val FILE_CHOOSER_FILTER_TYPE = "application/octet-stream"
+private const val FILE_CHOOSER_FILTER_TYPE = "*/*"
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
     val fileChooserLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             Log.d("activityResult", "selected file: $uri")
+            viewModel.onIntent(HomeIntent.OnSelectedFile(uri = uri))
         }
     HomeScreenContent(onImportBtnClick = {
         fileChooserLauncher.launch(FILE_CHOOSER_FILTER_TYPE)

@@ -2,48 +2,23 @@ package ru.anydevprojects.flashcards.utils
 
 import android.content.Context
 import android.net.Uri
-import android.webkit.MimeTypeMap
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
 
 class FilePathConverter(private val applicationContext: Context) {
-    fun pathFileFromContentUri(contentUri: Uri): String {
-        val fileExtension = getFileExtension(applicationContext, contentUri)
-        val fileName = "temporary_file" + if (fileExtension != null) ". $fileExtension " else ""
+    fun pathFileFromContentUri(uriString: String): Result<String> = kotlin.runCatching {
+        val contentUri = Uri.parse(uriString)
+        val fileNameWithExtension = contentUri.path?.substringAfterLast("/") ?: "fileName.apkg"
 
-        val tempFile = File(applicationContext.cacheDir, fileName)
+        val tempFile = File(applicationContext.cacheDir, fileNameWithExtension)
         tempFile.createNewFile()
 
-        try {
-            val oStream = FileOutputStream(tempFile)
-            val inputStream = applicationContext.contentResolver.openInputStream(contentUri)
-
-            inputStream?.let {
-                copy(inputStream, oStream)
+        applicationContext.contentResolver.openInputStream(contentUri)?.use { inputStream ->
+            FileOutputStream(tempFile).use { oStream ->
+                inputStream.copyTo(oStream)
             }
-
-            oStream.flush()
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
 
-        return tempFile.path
-    }
-
-    private fun getFileExtension(context: Context, uri: Uri): String? {
-        val fileType: String? = context.contentResolver.getType(uri)
-        return MimeTypeMap.getSingleton().getExtensionFromMimeType(fileType)
-    }
-
-    @Throws(IOException::class)
-    private fun copy(source: InputStream, target: OutputStream) {
-        val buf = ByteArray(8192)
-        var length: Int
-        while (source.read(buf).also { length = it } > 0) {
-            target.write(buf, 0, length)
-        }
+        tempFile.path
     }
 }
