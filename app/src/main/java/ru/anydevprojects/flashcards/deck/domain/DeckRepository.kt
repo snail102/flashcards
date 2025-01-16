@@ -1,3 +1,7 @@
 package ru.anydevprojects.flashcards.deck.domain
 
-interface DeckRepository
+import ru.anydevprojects.flashcards.utils.CollectionDatabaseModel
+
+interface DeckRepository {
+    suspend fun importDecks(collectionDatabaseModel: CollectionDatabaseModel)
+}

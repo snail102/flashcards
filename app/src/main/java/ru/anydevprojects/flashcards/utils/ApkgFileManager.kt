@@ -40,6 +40,7 @@ class ApkgFileManager(private val applicationContext: Context) {
             kotlin.runCatching {
                 val cardsList = mutableListOf<CardsAnkiModel>()
                 val notesList = mutableListOf<NotesAnkiModel>()
+                val decksList = mutableListOf<DeckAnkiModel>()
                 val dbFile = File("$collectionPath/collection.anki21")
                 if (!dbFile.exists()) {
                     throw IllegalArgumentException(
@@ -101,9 +102,28 @@ class ApkgFileManager(private val applicationContext: Context) {
                     }
                 }
 
+                val colCursor = db.rawQuery("SELECT * FROM col", null)
+                colCursor.use { cursor ->
+                    if (cursor.moveToFirst()) {
+                        do {
+                            val decksJson =
+                                cursor.getString(cursor.getColumnIndexOrThrow("decks"))
+                            val decksMap = Json.decodeFromString<Map<String, String>>(decksJson)
+
+                            for ((key, value) in decksMap) {
+                                if (key != "1") {
+                                    val deck = Json.decodeFromString<DeckAnkiModel>(value)
+                                    decksList.add(deck)
+                                }
+                            }
+                        } while (cursor.moveToNext())
+                    }
+                }
+
                 CollectionDatabaseModel(
                     cards = cardsList,
-                    notes = notesList
+                    notes = notesList,
+                    decks = decksList
                 )
             }
         }

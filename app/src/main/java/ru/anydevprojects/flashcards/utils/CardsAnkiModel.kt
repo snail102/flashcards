@@ -1,5 +1,7 @@
 package ru.anydevprojects.flashcards.utils
 
+import ru.anydevprojects.flashcards.card.data.models.CardEntity
+
 data class CardsAnkiModel(
     val id: Long, // Уникальный идентификатор карточки
     val nid: Long, // Идентификатор связанной заметки
@@ -17,4 +19,12 @@ data class CardsAnkiModel(
     val left: Int, // Оставшееся количество повторений в текущей стадии
     val odue: Long, // Оригинальная дата следующего показа для отложенных карточек
     val odid: Long // Оригинальный идентификатор колоды для отложенных карточек
+)
+
+fun CardsAnkiModel.toEntity(front: String, back: String): CardEntity = CardEntity(
+    id = id,
+    did = did,
+    mod = mod,
+    front = front,
+    back = back
 )
