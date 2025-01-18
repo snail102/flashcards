@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Flashcards</string>
+    <string name="my_decks">Мои колоды</string>
+    <string name="settings">Настройки</string>
 </resources>

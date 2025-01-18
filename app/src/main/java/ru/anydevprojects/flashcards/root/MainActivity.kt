@@ -10,8 +10,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ru.anydevprojects.flashcards.home.HomeScreenDestination
-import ru.anydevprojects.flashcards.home.presentation.HomeScreen
+import ru.anydevprojects.flashcards.bottomHost.navigation.BottomHostScreenDestination
+import ru.anydevprojects.flashcards.bottomHost.presentation.BottomHostScreen
 import ru.anydevprojects.flashcards.ui.theme.FlashcardsTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
             FlashcardsTheme {
                 AppHost(
                     navController = navController,
-                    startDestination = HomeScreenDestination
+                    startDestination = BottomHostScreenDestination
                 )
             }
         }
@@ -37,8 +37,8 @@ private fun AppHost(navController: NavHostController, startDestination: Any) {
         navController = navController,
         startDestination = startDestination
     ) {
-        composable<HomeScreenDestination> {
-            HomeScreen()
+        composable<BottomHostScreenDestination> {
+            BottomHostScreen()
         }
     }
 }
