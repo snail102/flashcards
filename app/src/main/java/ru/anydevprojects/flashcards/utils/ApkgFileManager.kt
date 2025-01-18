@@ -9,9 +9,15 @@ import java.io.FileOutputStream
 import java.util.zip.ZipFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 class ApkgFileManager(private val applicationContext: Context) {
+
+    // TODO вынести в DI
+    private val json = Json {
+        ignoreUnknownKeys = true
+    }
     suspend fun extractFile(filePath: String): Result<String> = withContext(Dispatchers.IO) {
         kotlin.runCatching {
             val fileNameWithExtension = filePath.substringAfterLast("/")
@@ -108,12 +114,13 @@ class ApkgFileManager(private val applicationContext: Context) {
                         do {
                             val decksJson =
                                 cursor.getString(cursor.getColumnIndexOrThrow("decks"))
-                            val decksMap = Json.decodeFromString<Map<String, String>>(decksJson)
+                            val decksMap = json.decodeFromString<Map<String, DeckAnkiModel>>(
+                                decksJson
+                            )
 
                             for ((key, value) in decksMap) {
                                 if (key != "1") {
-                                    val deck = Json.decodeFromString<DeckAnkiModel>(value)
-                                    decksList.add(deck)
+                                    decksList.add(value)
                                 }
                             }
                         } while (cursor.moveToNext())

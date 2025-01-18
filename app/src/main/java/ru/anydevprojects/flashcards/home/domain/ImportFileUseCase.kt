@@ -3,6 +3,8 @@ package ru.anydevprojects.flashcards.home.domain
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.anydevprojects.flashcards.card.domain.CardRepository
+import ru.anydevprojects.flashcards.deck.domain.DeckRepository
 import ru.anydevprojects.flashcards.home.domain.models.ImportState
 import ru.anydevprojects.flashcards.home.domain.models.ImportStep
 import ru.anydevprojects.flashcards.utils.ApkgFileManager
@@ -10,7 +12,9 @@ import ru.anydevprojects.flashcards.utils.FilePathConverter
 
 class ImportFileUseCase(
     private val filePathConverter: FilePathConverter,
-    private val apkgFileManager: ApkgFileManager
+    private val apkgFileManager: ApkgFileManager,
+    private val cardRepository: CardRepository,
+    private val deckRepository: DeckRepository
 ) {
     operator fun invoke(uriString: String): Flow<ImportState> = flow {
         emit(ImportState.Starting)
@@ -28,6 +32,11 @@ class ImportFileUseCase(
                     val collectionDatabaseModel = apkgFileManager.getDataFromDatabaseFile(
                         unzippedFile
                     )
+                    collectionDatabaseModel.onSuccess {
+                        cardRepository.importCards(it)
+                        deckRepository.importDecks(it)
+                    }
+
                     Log.d("dataFromDB", collectionDatabaseModel.getOrNull().toString())
                 }
             }

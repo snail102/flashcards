@@ -1,9 +1,11 @@
 package ru.anydevprojects.flashcards.card.data
 
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import ru.anydevprojects.flashcards.card.data.models.CardEntity
 
+@Dao
 interface CardDao {
 
     @Insert

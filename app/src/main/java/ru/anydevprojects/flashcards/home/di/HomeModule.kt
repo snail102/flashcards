@@ -6,6 +6,6 @@ import ru.anydevprojects.flashcards.home.domain.ImportFileUseCase
 import ru.anydevprojects.flashcards.home.presentation.HomeViewModel
 
 val homeModule = module {
-    factory { ImportFileUseCase(get(), get()) }
+    factory { ImportFileUseCase(get(), get(), get(), get()) }
     viewModel { HomeViewModel(get()) }
 }

@@ -12,7 +12,7 @@ composeBom = "2024.12.01"
 navigationCompose = "2.8.5"
 splashscreen = "1.2.0-alpha02"
 koin = "3.5.6"
-roomKsp = "2.1.0-1.0.29"
+roomKsp = "2.0.10-1.0.24"
 room = "2.6.1"
 
 [libraries]
